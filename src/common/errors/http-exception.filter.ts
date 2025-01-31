@@ -9,7 +9,6 @@ import {
   UnauthorizedException,
   HttpStatus,
   Logger,
-  ConflictException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { QueryFailedError } from 'typeorm';

@@ -3,10 +3,7 @@ import {
   IsString,
   IsNotEmpty,
   IsInt,
-  IsDecimal,
   IsEnum,
-  IsBoolean,
-  IsDate,
   Min,
   IsNumber,
 } from 'class-validator';

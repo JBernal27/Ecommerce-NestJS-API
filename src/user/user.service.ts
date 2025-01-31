@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { Roles } from 'src/common/enums/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -39,16 +40,16 @@ export class UsersService {
   }
 
   async findOne(id: number, user: User) {
-    // if (user.id !== id && user.role !== Roles.ADMIN) {
-    //   throw new BadRequestException('You can only access your own data');
-    // }
+    if (user.id !== id && user.role !== Roles.ADMIN) {
+      throw new BadRequestException('You can only access your own data');
+    }
     return this.userRepository.findOne({ where: { id } });
   }
 
   async remove(id: number, user: User) {
-    // if (user.id !== id && user.role !== Roles.ADMIN) {
-    //   throw new BadRequestException('You can only delete your own data');
-    // }
+    if (user.id !== id && user.role !== Roles.ADMIN) {
+      throw new BadRequestException('You can only delete your own data');
+    }
     await this.userRepository.update(id, { is_deleted: true });
     return this.userRepository.findOne({ where: { id } });
   }
