@@ -36,6 +36,8 @@ export class AuthGuard implements CanActivate {
         context.getHandler(),
       );
 
+      console.log(necessaryRole);
+
       if (necessaryRole) {
         if (necessaryRole[0] !== payload.role && payload.role !== 'admin') {
           throw new UnauthorizedException(

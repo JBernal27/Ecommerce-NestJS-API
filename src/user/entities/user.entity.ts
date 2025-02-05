@@ -1,12 +1,7 @@
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Sales } from 'src/sales/entity/sales.entity';
 import { Roles } from 'src/common/enums/roles.enum';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -66,4 +61,7 @@ export class User {
     description: 'The date when the user was last updated.',
   })
   updated_at: Date;
+
+  @OneToMany(() => Sales, sales => sales.client)
+  sales: Sales[];
 }

@@ -8,6 +8,7 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ServicesModule } from './services/services.module';
 import { MercadopagoModule } from './mercadopago/mercadopago.module';
+import { SalesModule } from './sales/sales.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MercadopagoModule } from './mercadopago/mercadopago.module';
     ProductsModule,
     ServicesModule,
     MercadopagoModule,
+    SalesModule,
   ],
   controllers: [],
   providers: [

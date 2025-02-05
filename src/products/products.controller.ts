@@ -22,11 +22,11 @@ import { JwtPayload } from 'src/common/interfaces';
 
 @Controller('products')
 @PrivateService()
-@necessaryRole(Roles.SELLER)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
-
+  
   @Post()
+  @necessaryRole(Roles.SELLER)
   create(@Body() createProductDto: CreateProductDto, @Req() req: Request) {
     const user = req.user as JwtPayload;
     return this.productsService.create(createProductDto, user);
