@@ -31,7 +31,7 @@ export class MercadopagoService {
             unit_price: 2000,
             description: 'Description of my product',
             category_id: 'retail',
-            currency_id: 'COP'
+            currency_id: 'COP',
           },
           {
             id: '010983099',
@@ -40,7 +40,7 @@ export class MercadopagoService {
             unit_price: 2000,
             description: 'Description of my product 2',
             category_id: 'retail',
-            currency_id: 'COP'
+            currency_id: 'COP',
           },
         ],
         back_urls: {
@@ -48,7 +48,7 @@ export class MercadopagoService {
           failure: 'https://52a1-201-184-187-42.ngrok-free.app/failure',
           pending: 'https://52a1-201-184-187-42.ngrok-free.app/pending',
         },
-        notification_url: 'https://52a1-201-184-187-42.ngrok-free.app/sales',
+        notification_url: `https://52a1-201-184-187-42.ngrok-free.app/sales?user_id=${jwtPayload}`,
       },
     });
 
@@ -56,6 +56,5 @@ export class MercadopagoService {
     console.log(result);
 
     return result.init_point;
-    
   }
 }

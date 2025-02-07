@@ -24,7 +24,7 @@ import { JwtPayload } from 'src/common/interfaces';
 @PrivateService()
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
-  
+
   @Post()
   @necessaryRole(Roles.SELLER)
   create(@Body() createProductDto: CreateProductDto, @Req() req: Request) {
