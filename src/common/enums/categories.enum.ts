@@ -11,3 +11,12 @@ export enum ProductCategory {
   OFFICE_SUPPLIES = 'Office Supplies',
   HANDMADE = 'Handmade',
 }
+
+export enum ServiceCategory {
+  CLEANING = 'Cleaning',
+  MAINTENANCE = 'Maintenance',
+  CONSULTING = 'Consulting',
+  EDUCATION = 'Education',
+  HEALTHCARE = 'Healthcare',
+  OTHER = 'Other',
+}

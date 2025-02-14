@@ -8,6 +8,7 @@ import {
 import { Roles } from 'src/common/enums/roles.enum';
 import { JwtPayload } from 'src/common/interfaces';
 import { Request } from 'express';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 
 @Controller('mercadopago')
 export class MercadopagoController {
@@ -25,6 +26,7 @@ export class MercadopagoController {
   }
 
   @Post('confirm')
+  @ApiExcludeEndpoint()
   confirmPayment(
     @Query() query: any,
   ) {

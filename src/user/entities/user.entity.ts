@@ -1,7 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Sales } from 'src/sales/entity/sales.entity';
 import { Roles } from 'src/common/enums/roles.enum';
+import { Service } from 'src/services/entities/service.entity';
 
 @Entity('users')
 export class User {
@@ -31,7 +39,7 @@ export class User {
   password: string;
 
   @Column({ type: 'enum', enum: Roles, default: Roles.CLIENT })
-  @ApiProperty({ example: 'seeler', description: 'The role of the user.' })
+  @ApiProperty({ example: 'seller', description: 'The role of the user.' })
   role: Roles;
 
   @Column({ default: false })
@@ -62,6 +70,13 @@ export class User {
   })
   updated_at: Date;
 
-  @OneToMany(() => Sales, sales => sales.client)
+  @OneToMany(() => Sales, (sales) => sales.client)
   sales: Sales[];
+
+  @OneToMany(() => Service, (service) => service.provider)
+  @ApiProperty({
+    description: 'List of services provided by the user.',
+    type: () => [Service],
+  })
+  services: Service[];
 }
