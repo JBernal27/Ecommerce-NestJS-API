@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Post, Query, Req } from '@nestjs/common';
 import { MercadopagoService } from './mercadopago.service';
 import { ProductsPaymentDto } from './dto/products-payment.dto';
 import {
@@ -9,12 +9,12 @@ import { Roles } from 'src/common/enums/roles.enum';
 import { JwtPayload } from 'src/common/interfaces';
 import { Request } from 'express';
 
-@PrivateService()
 @Controller('mercadopago')
 export class MercadopagoController {
   constructor(private readonly mercadopagoService: MercadopagoService) {}
-
+  
   @Post()
+  @PrivateService()
   @necessaryRole(Roles.CLIENT)
   productsPayment(
     @Body() productsPaymentDto: ProductsPaymentDto,
@@ -22,5 +22,12 @@ export class MercadopagoController {
   ) {
     const user = req.user as JwtPayload;
     return this.mercadopagoService.productsPayment(productsPaymentDto, user);
+  }
+
+  @Post('confirm')
+  confirmPayment(
+    @Query() query: any,
+  ) {
+    return this.mercadopagoService.confirmPayment(query);
   }
 }

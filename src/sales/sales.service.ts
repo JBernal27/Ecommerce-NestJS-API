@@ -1,25 +1,60 @@
 import { Injectable } from '@nestjs/common';
-import MercadoPagoConfig, { Payment } from 'mercadopago';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Items } from 'mercadopago/dist/clients/commonTypes';
+import { Product } from 'src/products/entities/product.entity';
+import { Repository } from 'typeorm';
+import { Sales } from './entity/sales.entity';
+import { UsersService } from 'src/user/user.service';
 
 @Injectable()
 export class SalesService {
-  private mercadopagoConfig: MercadoPagoConfig;
+  constructor(
+    @InjectRepository(Product)
+    private readonly productRepository: Repository<Product>,
+    @InjectRepository(Sales)
+    private readonly salesRepository: Repository<Sales>,
+    private readonly userService: UsersService,
+  ) {}
 
-  constructor() {
-    this.mercadopagoConfig = new MercadoPagoConfig({
-      accessToken:
-        'APP_USR-5846589935685812-020318-97d30af8b3472685ee9396aad79d6145-2246478781',
-      options: { timeout: 5000, idempotencyKey: 'abc' },
-    });
-  }
+  async create(items: Items[], user_id: number) {
+    console.log('items:', items);
 
-  async create(query: any) {
-    
-    if (query.type === 'payment') {
-      console.log('compradoooo');
-      const payment = new Payment(this.mercadopagoConfig);
-      const data = await payment.get({ id: query['data.id'] });
-      console.log(data.additional_info.items);
-    }
+    const sales = await Promise.all(
+      items.map(async (item) => {
+        const product = await this.productRepository.findOne({
+          where: { id: Number(item.id) },
+        });
+
+        console.log('searching', user_id);
+
+        const user = await this.userService.findOne(user_id);
+
+        if (!user) {
+          throw new Error('User not found');
+        }
+
+        const final_price = product.price * item.quantity;
+
+        await this.productRepository.update(
+          { id: product.id },
+          { quantity: product.quantity - item.quantity },
+        );
+
+        console.log('pushing', product.name);
+
+        return this.salesRepository.create({
+          client: user,
+          product,
+          final_price,
+          created_by: user.id,
+          updated_by: user.id,
+        });
+      }),
+    );
+
+    console.log(sales);
+    const confirmedSales = await this.salesRepository.save(sales);
+
+    return confirmedSales;
   }
 }

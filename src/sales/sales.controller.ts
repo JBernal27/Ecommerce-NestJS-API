@@ -6,9 +6,5 @@ import { query } from 'express';
 export class SalesController {
   constructor(private readonly salesService: SalesService) {}
 
-  @Post()
-  create(@Query() query: any) {
-    return this.salesService.create(query);
-  }
 }
 

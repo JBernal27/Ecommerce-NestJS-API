@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Request,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,6 +18,7 @@ import {
   PrivateService,
 } from 'src/common/decorators/role.decorator';
 import { Roles } from 'src/common/enums/roles.enum';
+import { JwtPayload } from 'src/common/interfaces';
 
 @Controller('users')
 @ApiTags('Users')
@@ -66,7 +68,13 @@ export class UsersController {
   })
   @PrivateService()
   findOne(@Param('id') id: string, @Request() req) {
-    return this.usersService.findOne(+id, req.user);
+    const user = req.user as JwtPayload;
+
+    if (user.id !== +id && user.role !== Roles.ADMIN) {
+      throw new BadRequestException('You can only access your own data');
+    }
+
+    return this.usersService.findOne(+id);
   }
 
   // @Patch(':id')

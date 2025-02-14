@@ -48,6 +48,7 @@ export class ProductsController {
   }
 
   @Patch(':id')
+  @necessaryRole(Roles.SELLER)
   update(
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
@@ -58,6 +59,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @necessaryRole(Roles.SELLER)
   remove(@Param('id') id: string, @Req() req: Request) {
     const user = req.user as JwtPayload;
     return this.productsService.remove(+id, user);

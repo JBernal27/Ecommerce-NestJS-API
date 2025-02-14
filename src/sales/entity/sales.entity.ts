@@ -17,13 +17,13 @@ export class Sales {
   final_price: number;
 
   @Column()
-  created_by: string;
+  created_by: number;
 
   @CreateDateColumn()
   created_at: Date;
 
   @Column()
-  updated_by: string;
+  updated_by: number;
 
   @UpdateDateColumn()
   updated_at: Date;

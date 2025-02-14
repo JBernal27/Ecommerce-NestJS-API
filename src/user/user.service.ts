@@ -2,9 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Roles } from 'src/common/enums/roles.enum';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -39,10 +39,7 @@ export class UsersService {
     return this.userRepository.findOneBy({ email });
   }
 
-  async findOne(id: number, user: User) {
-    if (user.id !== id && user.role !== Roles.ADMIN) {
-      throw new BadRequestException('You can only access your own data');
-    }
+  async findOne(id: number) {
     return this.userRepository.findOne({ where: { id } });
   }
 
